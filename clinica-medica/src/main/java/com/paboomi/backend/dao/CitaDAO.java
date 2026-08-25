@@ -1,6 +1,7 @@
 package com.paboomi.backend.dao;
 
 import com.paboomi.backend.models.Cita;
+import com.paboomi.backend.util.files.FileUtil;
 import com.paboomi.backend.util.ring.CitaSerializador;
 import com.paboomi.backend.util.ring.IndexHandler;
 import com.paboomi.backend.util.ring.RingFileHandler;
@@ -18,12 +19,12 @@ import java.util.stream.Collectors;
 public class CitaDAO {
 
     //* RUTAS DE ARCHIVOS
-    private static final String RUTA_DATOS = "citas.dat";
-    private static final String RUTA_IDX_UUID = "citas_idx_uuid.dat";
-    private static final String RUTA_IDX_PACIENTE = "citas_idx_paciente.dat";
-    private static final String RUTA_IDX_MEDICO = "citas_idx_medico.dat";
-    private static final String RUTA_IDX_FECHA = "citas_idx_fecha.dat";
-    private static final String RUTA_IDX_ESTADO = "citas_idx_estado.dat";
+    private static final String RUTA_DATOS = "data/citas/citas.dat";
+    private static final String RUTA_IDX_UUID = "data/citas/citas_idx_uuid.dat";
+    private static final String RUTA_IDX_PACIENTE = "data/citas/citas_idx_paciente.dat";
+    private static final String RUTA_IDX_MEDICO = "data/citas/citas_idx_medico.dat";
+    private static final String RUTA_IDX_FECHA = "data/citas/citas_idx_fecha.dat";
+    private static final String RUTA_IDX_ESTADO = "data/citas/citas_idx_estado.dat";
 
     //* CONSTANTES
     private static final int LONGITUD_UUID = 36;
@@ -50,6 +51,17 @@ public class CitaDAO {
 
 
     public CitaDAO() throws Exception {
+
+        //* Crear los directorios
+        FileUtil.crearDirectoriosParaArchivos(
+                RUTA_DATOS,
+                RUTA_IDX_ESTADO,
+                RUTA_IDX_FECHA,
+                RUTA_IDX_MEDICO,
+                RUTA_IDX_PACIENTE,
+                RUTA_IDX_UUID
+        );
+
         //* Inicializar serializador
         this.serializador = new CitaSerializador();
 

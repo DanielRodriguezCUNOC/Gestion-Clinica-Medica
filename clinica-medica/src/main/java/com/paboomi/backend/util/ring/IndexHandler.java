@@ -1,6 +1,6 @@
 package com.paboomi.backend.util.ring;
 
-import com.paboomi.backend.util.RandomAccessFileUtil;
+import com.paboomi.backend.util.files.RandomAccessFileUtil;
 import com.paboomi.backend.util.exceptions.FileException;
 
 import java.io.RandomAccessFile;

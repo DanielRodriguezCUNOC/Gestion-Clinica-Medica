@@ -1,7 +1,7 @@
 package com.paboomi.backend.util.ring;
 
 import com.paboomi.backend.models.Medico;
-import com.paboomi.backend.util.RandomAccessFileUtil;
+import com.paboomi.backend.util.files.RandomAccessFileUtil;
 
 import java.io.RandomAccessFile;
 import java.time.LocalTime;

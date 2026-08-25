@@ -1,6 +1,8 @@
 package com.paboomi.frontend.app;
 
 import com.paboomi.frontend.facade.ClinicaFacade;
+import com.paboomi.frontend.features.medicos.MedicoView;
+import com.paboomi.frontend.features.pacientes.PacienteView;
 
 import javax.swing.*;
 import java.awt.*;
@@ -99,9 +101,9 @@ public class MainFrame extends JFrame {
         pnlContenidoCentral = new JPanel(cardLayout);
         pnlContenidoCentral.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        //* Paneles temporales (Placeholders) hasta integrar PacienteView, MedicoView, etc.
-        pnlPacientes = new JPanel(new BorderLayout());
-        pnlMedicos = new JPanel(new BorderLayout());
+        //* Paneles
+        pnlPacientes = new PacienteView();
+        pnlMedicos = new MedicoView();
         pnlCitas = new JPanel(new BorderLayout());
         pnlReportes = new JPanel(new BorderLayout());
 
