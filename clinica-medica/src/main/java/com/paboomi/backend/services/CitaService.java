@@ -105,7 +105,7 @@ public class CitaService {
                     dto.getObservaciones()
             );
 
-            // 8. Guardar
+            // Guardar
             citaDAO.registrarCita(cita);
 
         } catch (DateTimeParseException e) {
