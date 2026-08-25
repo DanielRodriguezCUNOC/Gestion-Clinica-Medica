@@ -382,11 +382,9 @@ public class PacienteService {
             throw new ServiceException("Formato de teléfono inválido");
         }
 
-        // Validar formato de correo (opcional)
-        if (dto.getEmail() != null && !dto.getEmail().isEmpty()) {
-            if (!dto.getEmail().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
-                throw new ServiceException("Formato de correo electrónico inválido");
-            }
+        // Validar tipo de sangre - Soporta A+, A-, B+, B-, AB+, AB-, O+, O-
+        if (!dto.getTipoSangre().matches("^(A|B|AB|O)[+-]$")) {
+            throw new ServiceException("Tipo de sangre inválido. Formatos válidos: A+, A-, B+, B-, AB+, AB-, O+, O-");
         }
 
         if (dto.getTipoSangre() == null || dto.getTipoSangre().trim().isEmpty()) {

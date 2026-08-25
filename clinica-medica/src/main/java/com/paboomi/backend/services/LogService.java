@@ -7,11 +7,7 @@ import com.paboomi.backend.util.exceptions.ServiceException;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.File;
 import java.io.RandomAccessFile;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -48,7 +44,7 @@ public class LogService {
             entry.setDetalle(detalle);
             entry.setIdEntidad(idEntidad);
 
-            // Escribir en archivo usando RandomAccessFile
+            //* Escribir en archivo usando RandomAccessFile
             try (RandomAccessFile raf = new RandomAccessFile(RUTA_LOG, "rw")) {
                 //* Posicionarse al final del archivo
                 raf.seek(raf.length());
