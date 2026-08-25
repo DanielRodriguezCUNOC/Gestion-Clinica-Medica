@@ -1,6 +1,7 @@
 package com.paboomi.frontend.app;
 
 import com.paboomi.frontend.facade.ClinicaFacade;
+import com.paboomi.frontend.features.citas.CitaView;
 import com.paboomi.frontend.features.medicos.MedicoView;
 import com.paboomi.frontend.features.pacientes.PacienteView;
 
@@ -104,7 +105,7 @@ public class MainFrame extends JFrame {
         //* Paneles
         pnlPacientes = new PacienteView();
         pnlMedicos = new MedicoView();
-        pnlCitas = new JPanel(new BorderLayout());
+        pnlCitas = new CitaView();
         pnlReportes = new JPanel(new BorderLayout());
 
         //* Registrar paneles en el CardLayout

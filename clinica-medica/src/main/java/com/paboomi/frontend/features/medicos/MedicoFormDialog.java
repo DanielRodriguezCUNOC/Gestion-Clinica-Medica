@@ -2,6 +2,7 @@ package com.paboomi.frontend.features.medicos;
 
 import com.paboomi.backend.dto.RegistrarMedicoDTO;
 import com.paboomi.backend.services.MedicoService;
+import com.paboomi.frontend.facade.ClinicaFacade;
 import com.paboomi.frontend.shared.BaseFormDialog;
 import com.paboomi.frontend.shared.FormGroupPanel;
 
@@ -18,11 +19,8 @@ public class MedicoFormDialog extends BaseFormDialog {
     private JTextField txtHorarioInicio;
     private JTextField txtHorarioFin;
 
-    private MedicoService medicoService;
-
     public MedicoFormDialog(Frame parent, MedicoService medicoService) {
         super(parent, "Registrar Nuevo Médico");
-        this.medicoService = medicoService;
         inicializarCampos();
     }
 
@@ -58,8 +56,7 @@ public class MedicoFormDialog extends BaseFormDialog {
             dto.setHorarioInicio(txtHorarioInicio.getText());
             dto.setHorarioFin(txtHorarioFin.getText());
 
-            medicoService.registrarMedico(dto);
-
+            ClinicaFacade.getInstance().registrarMedico(dto);
             JOptionPane.showMessageDialog(this, "Médico registrado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
             dispose();
 
