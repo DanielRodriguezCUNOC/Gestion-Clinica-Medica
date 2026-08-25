@@ -28,4 +28,56 @@ public class DataTablePanel extends JPanel {
     public int getFilaSeleccionada () {return table.getSelectedRow();}
 
     public Object getValorCelda(int fila, int columna) {return model.getValueAt(fila, columna);}
+
+    // En DataTablePanel.java
+
+    /**
+     * Limpia todas las filas de la tabla
+     */
+    public void limpiar() {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0);
+    }
+
+    /**
+     * Agrega una fila a la tabla
+     */
+    public void agregarFila(Object[] fila) {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.addRow(fila);
+    }
+
+    /**
+     * Obtiene el número de filas
+     */
+    public int getRowCount() {
+        return table.getRowCount();
+    }
+
+    /**
+     * Obtiene el número de columnas
+     */
+    public int getColumnCount() {
+        return table.getColumnCount();
+    }
+
+    /**
+     * Obtiene el valor de una celda
+     */
+    public Object getValueAt(int row, int col) {
+        return table.getValueAt(row, col);
+    }
+
+    /**
+     * Obtiene los nombres de las columnas
+     */
+    public String[] getColumnNames() {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        int columnCount = model.getColumnCount();
+        String[] names = new String[columnCount];
+        for (int i = 0; i < columnCount; i++) {
+            names[i] = model.getColumnName(i);
+        }
+        return names;
+    }
 }

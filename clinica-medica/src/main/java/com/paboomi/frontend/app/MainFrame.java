@@ -1,9 +1,12 @@
 package com.paboomi.frontend.app;
 
+import com.paboomi.backend.models.LogEntry;
+import com.paboomi.backend.services.LogService;
 import com.paboomi.frontend.facade.ClinicaFacade;
 import com.paboomi.frontend.features.citas.CitaView;
 import com.paboomi.frontend.features.medicos.MedicoView;
 import com.paboomi.frontend.features.pacientes.PacienteView;
+import com.paboomi.frontend.features.reportes.ReportesView;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,6 +25,7 @@ public class MainFrame extends JFrame {
     private JPanel pnlMedicos;
     private JPanel pnlCitas;
     private JPanel pnlReportes;
+    private LogService logService;
 
     public MainFrame() {
         //* Configuración básica de la ventana principal
@@ -35,10 +39,23 @@ public class MainFrame extends JFrame {
         //* Instanciar la fachada principal de la aplicación
         ClinicaFacade.getInstance();
 
+        this.logService = ClinicaFacade.getInstance().getLogService();
+
         //* Construir la interfaz
         initHeader();
         initSidebar();
         initCentralArea();
+
+        //* Regitrar inicio de sesión (spoiler no hay XD)
+        if (logService != null) {
+            logService.setUsuarioActual("Administrador");
+            logService.registrarLog(
+                    LogEntry.Modulo.SISTEMA,
+                    LogEntry.Accion.LOGIN,
+                    "Usuario Administrador inició sesión",
+                    null
+            );
+        }
     }
 
     /**
@@ -103,10 +120,10 @@ public class MainFrame extends JFrame {
         pnlContenidoCentral.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         //* Paneles
-        pnlPacientes = new PacienteView();
+        pnlPacientes = new PacienteView(logService);
         pnlMedicos = new MedicoView();
         pnlCitas = new CitaView();
-        pnlReportes = new JPanel(new BorderLayout());
+        pnlReportes = new ReportesView(logService);
 
         //* Registrar paneles en el CardLayout
         pnlContenidoCentral.add(pnlPacientes, CARD_PACIENTES);
@@ -125,6 +142,9 @@ public class MainFrame extends JFrame {
      */
     public void mostrarTarjeta(String nombreTarjeta) {
         cardLayout.show(pnlContenidoCentral, nombreTarjeta);
+
+        //* Cuando se cambia a reportes se recargan los logs
+        if (nombreTarjeta.equals(CARD_REPORTES) && pnlReportes instanceof ReportesView) {}
     }
 
     /**

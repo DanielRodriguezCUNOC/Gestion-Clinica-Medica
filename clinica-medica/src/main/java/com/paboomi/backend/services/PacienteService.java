@@ -4,8 +4,10 @@ import com.paboomi.backend.dao.PacienteDAO;
 import com.paboomi.backend.dto.CitaDTO;
 import com.paboomi.backend.dto.PacienteDTO;
 import com.paboomi.backend.dto.RegistrarPacienteDTO;
+import com.paboomi.backend.models.LogEntry;
 import com.paboomi.backend.models.Paciente;
 import com.paboomi.backend.util.exceptions.ServiceException;
+import com.paboomi.frontend.facade.ClinicaFacade;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,10 +23,12 @@ public class PacienteService {
     private final PacienteDAO pacienteDAO;
     private final CitaService citaService;
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+    private LogService logService;
 
-    public PacienteService(CitaService citaService) throws Exception {
+    public PacienteService(CitaService citaService, LogService logService) throws Exception {
         this.pacienteDAO = new PacienteDAO();
         this.citaService = citaService;
+        this.logService = logService;
     }
 
     //* MÉTODOS DE NEGOCIO
@@ -64,6 +68,14 @@ public class PacienteService {
 
             //! Guardar
             pacienteDAO.registrarPaciente(paciente);
+
+            //* Registrar en log
+            logService.registrarLog(
+                    LogEntry.Modulo.PACIENTES,
+                    LogEntry.Accion.CREACIÓN,
+                    "Se registró al paciente: " + paciente.getNombres() + " " +  paciente.getApellidos(),
+                    null
+            );
 
         } catch (ParseException e) {
             throw new ServiceException("Formato de fecha inválido. Use yyyy-MM-dd");
@@ -370,11 +382,9 @@ public class PacienteService {
             throw new ServiceException("Formato de teléfono inválido");
         }
 
-        // Validar formato de correo (opcional)
-        if (dto.getEmail() != null && !dto.getEmail().isEmpty()) {
-            if (!dto.getEmail().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
-                throw new ServiceException("Formato de correo electrónico inválido");
-            }
+        // Validar tipo de sangre - Soporta A+, A-, B+, B-, AB+, AB-, O+, O-
+        if (!dto.getTipoSangre().matches("^(A|B|AB|O)[+-]$")) {
+            throw new ServiceException("Tipo de sangre inválido. Formatos válidos: A+, A-, B+, B-, AB+, AB-, O+, O-");
         }
 
         if (dto.getTipoSangre() == null || dto.getTipoSangre().trim().isEmpty()) {
