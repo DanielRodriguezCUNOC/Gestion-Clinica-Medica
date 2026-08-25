@@ -4,10 +4,8 @@ import com.paboomi.backend.dao.MedicoDAO;
 import com.paboomi.backend.dto.CitaDTO;
 import com.paboomi.backend.dto.MedicoDTO;
 import com.paboomi.backend.dto.RegistrarMedicoDTO;
-import com.paboomi.backend.models.Cita;
 import com.paboomi.backend.models.Medico;
 import com.paboomi.backend.util.exceptions.ServiceException;
-import com.paboomi.frontend.features.medicos.MedicoDialog;
 import lombok.Getter;
 import lombok.Setter;
 
