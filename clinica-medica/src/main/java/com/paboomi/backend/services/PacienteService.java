@@ -7,7 +7,6 @@ import com.paboomi.backend.dto.RegistrarPacienteDTO;
 import com.paboomi.backend.models.LogEntry;
 import com.paboomi.backend.models.Paciente;
 import com.paboomi.backend.util.exceptions.ServiceException;
-import com.paboomi.frontend.facade.ClinicaFacade;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -73,8 +72,10 @@ public class PacienteService {
             logService.registrarLog(
                     LogEntry.Modulo.PACIENTES,
                     LogEntry.Accion.CREACIÓN,
-                    "Se registró al paciente: " + paciente.getNombres() + " " +  paciente.getApellidos(),
-                    null
+                    "Paciente registrado: " + paciente.getNombres() + " " + paciente.getApellidos() +
+                            " | Identificación: " + paciente.getIdentificacion() +
+                            " | Tipo sangre: " + paciente.getTipoSangre(),
+                    paciente.getIdentificacion()
             );
 
         } catch (ParseException e) {
@@ -200,6 +201,14 @@ public class PacienteService {
             //! Guardar cambios
             pacienteDAO.actualizarPaciente(pacienteExistente);
 
+            logService.registrarLog(
+                    LogEntry.Modulo.PACIENTES,
+                    LogEntry.Accion.ACTUALIZACIÓN,
+                    "Paciente actualizado: " + pacienteExistente.getNombres() + " " + pacienteExistente.getApellidos() +
+                            " | Identificación: " + pacienteExistente.getIdentificacion(),
+                    pacienteExistente.getIdentificacion()
+            );
+
         } catch (ParseException e) {
             throw new ServiceException("Formato de fecha inválido. Use yyyy-MM-dd");
         } catch (ServiceException e) {
@@ -231,6 +240,14 @@ public class PacienteService {
                 }
             }
             pacienteDAO.eliminarPaciente(identificacion);
+
+            logService.registrarLog(
+                    LogEntry.Modulo.PACIENTES,
+                    LogEntry.Accion.ELIMINACIÓN,
+                    "Paciente eliminado: " + paciente.getNombres() + " " + paciente.getApellidos() +
+                            " | Identificación: " + paciente.getIdentificacion(),
+                    paciente.getIdentificacion()
+            );
         } catch (ServiceException e) {
             throw e;
         } catch (Exception e) {

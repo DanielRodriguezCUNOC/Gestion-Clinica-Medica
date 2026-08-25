@@ -114,7 +114,11 @@ public class CitaService {
             logService.registrarLog(
                     LogEntry.Modulo.CITAS,
                     LogEntry.Accion.CREACIÓN,
-                    "Cita programada: " + cita.getMotivo() + " - Médico: " + medico.getNombres() + " - Paciente: " + paciente.getNombres(),
+                    "Cita programada | Paciente: " + paciente.getNombres() + " " + paciente.getApellidos() +
+                            " | Médico: " + medico.getNombres() + " " + medico.getApellidos() +
+                            " | Fecha: " + cita.getFechaCita().format(DATE_FORMATTER) +
+                            " | Hora: " + cita.getHoraInicio().format(TIME_FORMATTER) +
+                            " | Motivo: " + cita.getMotivo(),
                     cita.getId().toString()
             );
 
@@ -302,7 +306,10 @@ public class CitaService {
             logService.registrarLog(
                     LogEntry.Modulo.CITAS,
                     LogEntry.Accion.CANCELACIÓN,
-                    "Cita cancelada: " + cita.getMotivo() + " - Paciente: " + cita.getIdPaciente(),
+                    "Cita cancelada | Motivo: " + cita.getMotivo() +
+                            " | Paciente ID: " + cita.getIdPaciente() +
+                            " | Fecha: " + cita.getFechaCita().format(DATE_FORMATTER) +
+                            " | Hora: " + cita.getHoraInicio().format(TIME_FORMATTER),
                     id.toString()
             );
 
@@ -334,6 +341,14 @@ public class CitaService {
             }
 
             citaDAO.marcarComoAtendida(id);
+            logService.registrarLog(
+                    LogEntry.Modulo.CITAS,
+                    LogEntry.Accion.ATENCIÓN,
+                    "Cita marcada como atendida | Motivo: " + cita.getMotivo() +
+                            " | Paciente ID: " + cita.getIdPaciente() +
+                            " | Fecha: " + cita.getFechaCita().format(DATE_FORMATTER),
+                    id.toString()
+            );
         } catch (ServiceException e) {
             throw e;
         } catch (Exception e) {
@@ -365,6 +380,14 @@ public class CitaService {
             }
 
             citaDAO.actualizarCita(cita);
+            logService.registrarLog(
+                    LogEntry.Modulo.CITAS,
+                    LogEntry.Accion.ACTUALIZACIÓN,
+                    "Cita actualizada | Nuevo motivo: " + cita.getMotivo() +
+                            " | Observaciones: " + cita.getObservaciones() +
+                            " | Paciente ID: " + cita.getIdPaciente(),
+                    id.toString()
+            );
         } catch (ServiceException e) {
             throw e;
         } catch (Exception e) {
@@ -388,6 +411,14 @@ public class CitaService {
             }
 
             citaDAO.eliminarCita(id);
+            logService.registrarLog(
+                    LogEntry.Modulo.CITAS,
+                    LogEntry.Accion.ELIMINACIÓN,
+                    "Cita eliminada | Motivo: " + cita.getMotivo() +
+                            " | Paciente ID: " + cita.getIdPaciente() +
+                            " | Fecha: " + cita.getFechaCita().format(DATE_FORMATTER),
+                    id.toString()
+            );
         } catch (ServiceException e) {
             throw e;
         } catch (Exception e) {
