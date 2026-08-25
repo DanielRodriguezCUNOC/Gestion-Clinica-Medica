@@ -6,6 +6,7 @@ import com.paboomi.backend.dao.PacienteDAO;
 import com.paboomi.backend.dto.CitaDTO;
 import com.paboomi.backend.dto.RegistrarCitaDTO;
 import com.paboomi.backend.models.Cita;
+import com.paboomi.backend.models.LogEntry;
 import com.paboomi.backend.models.Medico;
 import com.paboomi.backend.models.Paciente;
 import com.paboomi.backend.util.exceptions.ServiceException;
@@ -27,16 +28,18 @@ public class CitaService {
     private final CitaDAO citaDAO;
     private final MedicoDAO medicoDAO;
     private final PacienteDAO pacienteDAO;
+    private final LogService logService;
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
 
-    public CitaService() throws Exception {
+    public CitaService(LogService logService) throws Exception {
         this.citaDAO = new CitaDAO();
         this.medicoDAO = new MedicoDAO();
         this.pacienteDAO = new PacienteDAO();
+        this.logService = logService;
     }
 
-    // ============ MÉTODOS DE NEGOCIO ============
+    //* MÉTODOS DE NEGOCIO
 
     /**
      * Programa una nueva cita
@@ -107,6 +110,13 @@ public class CitaService {
 
             // Guardar
             citaDAO.registrarCita(cita);
+
+            logService.registrarLog(
+                    LogEntry.Modulo.CITAS,
+                    LogEntry.Accion.CREACIÓN,
+                    "Cita programada: " + cita.getMotivo() + " - Médico: " + medico.getNombres() + " - Paciente: " + paciente.getNombres(),
+                    cita.getId().toString()
+            );
 
         } catch (DateTimeParseException e) {
             throw new ServiceException("Formato de fecha u hora inválido. Use yyyy-MM-dd y HH:mm");
@@ -288,6 +298,14 @@ public class CitaService {
             }
 
             citaDAO.cancelarCita(id);
+
+            logService.registrarLog(
+                    LogEntry.Modulo.CITAS,
+                    LogEntry.Accion.CANCELACIÓN,
+                    "Cita cancelada: " + cita.getMotivo() + " - Paciente: " + cita.getIdPaciente(),
+                    id.toString()
+            );
+
         } catch (ServiceException e) {
             throw e;
         } catch (Exception e) {

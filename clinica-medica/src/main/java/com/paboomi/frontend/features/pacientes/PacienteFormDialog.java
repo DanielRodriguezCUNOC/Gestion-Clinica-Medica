@@ -73,6 +73,7 @@ public class PacienteFormDialog extends BaseFormDialog {
             JOptionPane.showMessageDialog(this, "Paciente registrado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
             dispose();
 
+
         } catch (Exception e) {
             //! Se captura la ServiceException para mostrar el mensaje de validación al usuario
             JOptionPane.showMessageDialog(this, e.getMessage(), "Error de Validación", JOptionPane.ERROR_MESSAGE);

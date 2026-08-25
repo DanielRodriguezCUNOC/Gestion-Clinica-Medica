@@ -4,6 +4,7 @@ import com.paboomi.backend.dao.MedicoDAO;
 import com.paboomi.backend.dto.CitaDTO;
 import com.paboomi.backend.dto.MedicoDTO;
 import com.paboomi.backend.dto.RegistrarMedicoDTO;
+import com.paboomi.backend.models.LogEntry;
 import com.paboomi.backend.models.Medico;
 import com.paboomi.backend.util.exceptions.ServiceException;
 import lombok.Getter;
@@ -22,11 +23,13 @@ public class MedicoService {
 
     private final MedicoDAO medicoDAO;
     private final CitaService citaService;
+    private final LogService logService;
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
 
-    public MedicoService(CitaService citaService) throws Exception {
+    public MedicoService(CitaService citaService, LogService logService) throws Exception {
         this.medicoDAO = new MedicoDAO();
         this.citaService = citaService;
+        this.logService = logService;
     }
 
     //* MÉTODOS DE NEGOCIO
@@ -58,6 +61,14 @@ public class MedicoService {
 
             //* Guardar
             medicoDAO.registrarMedico(medico);
+
+            //* Regitrar en el log
+            logService.registrarLog(
+                    LogEntry.Modulo.MEDICOS,
+                    LogEntry.Accion.CREACIÓN,
+                    "Médico registrado: " + medico.getNombres() + " " + medico.getApellidos(),
+                    medico.getId().toString()
+            );
 
         } catch (DateTimeParseException e) {
             throw new ServiceException("Formato de hora inválido. Use HH:mm");
@@ -219,6 +230,14 @@ public class MedicoService {
             //* Guardar cambios
             medicoDAO.actualizarMedico(medicoExistente);
 
+            //* Regitrar en el log
+            logService.registrarLog(
+                    LogEntry.Modulo.MEDICOS,
+                    LogEntry.Accion.CREACIÓN,
+                    "Médico registrado: " + medicoExistente.getNombres() + " " + medicoExistente.getApellidos(),
+                    medicoExistente.getId().toString()
+            );
+
         } catch (DateTimeParseException e) {
             throw new ServiceException("Formato de hora inválido. Use HH:mm");
         } catch (ServiceException e) {
@@ -288,6 +307,15 @@ public class MedicoService {
             }
 
             medicoDAO.eliminarMedico(id);
+
+            //* Regitrar en el log
+            logService.registrarLog(
+                    LogEntry.Modulo.MEDICOS,
+                    LogEntry.Accion.CREACIÓN,
+                    "Médico registrado: " + medico.getNombres() + " " + medico.getApellidos(),
+                    medico.getId().toString()
+            );
+
         } catch (ServiceException e) {
             throw e;
         } catch (Exception e) {
