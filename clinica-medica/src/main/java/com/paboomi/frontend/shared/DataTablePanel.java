@@ -4,14 +4,13 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
-import java.util.Objects;
 
-public class DataTable extends JPanel {
+public class DataTablePanel extends JPanel {
 
     private JTable table;
     private DefaultTableModel model;
 
-    public DataTable(String[] columnas) {
+    public DataTablePanel(String[] columnas) {
         setLayout(new BorderLayout());
         model = new DefaultTableModel(columnas, 0){
             @Override

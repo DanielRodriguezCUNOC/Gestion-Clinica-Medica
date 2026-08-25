@@ -1,6 +1,7 @@
 package com.paboomi.backend.dao;
 
 import com.paboomi.backend.models.Medico;
+import com.paboomi.backend.util.files.FileUtil;
 import com.paboomi.backend.util.ring.IndexHandler;
 import com.paboomi.backend.util.ring.MedicoSerializador;
 import com.paboomi.backend.util.ring.RingFileHandler;
@@ -16,9 +17,9 @@ import java.util.*;
 public class MedicoDAO {
 
     //* RUTAS DE ARCHIVOS
-    private static final String RUTA_DATOS = "medicos.dat";
-    private static final String RUTA_IDX_UUID = "medicos_idx_uuid.dat";
-    private static final String RUTA_IDX_ESPECIALIDAD = "medicos_idx_especialidad.dat";
+    private static final String RUTA_DATOS = "data/medicos/medicos.dat";
+    private static final String RUTA_IDX_UUID = "data/medicos/medicos_idx_uuid.dat";
+    private static final String RUTA_IDX_ESPECIALIDAD = "data/medicos/medicos_idx_especialidad.dat";
 
     //* CONSTANTES
     private static final int LONGITUD_UUID = 36;
@@ -36,6 +37,13 @@ public class MedicoDAO {
 
     //* CONSTRUCTOR
     public MedicoDAO() throws Exception {
+
+        //* Crear directorios
+        FileUtil.crearDirectoriosParaArchivos(
+                RUTA_DATOS,
+                RUTA_IDX_UUID,
+                RUTA_IDX_ESPECIALIDAD
+        );
 
         //* Inicializar serializador
         this.serializador = new MedicoSerializador();

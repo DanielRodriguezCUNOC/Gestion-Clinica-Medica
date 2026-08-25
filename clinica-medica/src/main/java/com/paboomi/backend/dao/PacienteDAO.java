@@ -1,6 +1,7 @@
 package com.paboomi.backend.dao;
 
 import com.paboomi.backend.models.Paciente;
+import com.paboomi.backend.util.files.FileUtil;
 import com.paboomi.backend.util.ring.IndexHandler;
 import com.paboomi.backend.util.ring.PacienteSerializador;
 import com.paboomi.backend.util.ring.RingFileHandler;
@@ -16,9 +17,9 @@ import java.util.*;
 public class PacienteDAO {
 
     //* RUTAS DE ARCHIVOS
-    private static final String RUTA_DATOS = "pacientes.dat";
-    private static final String RUTA_IDX_IDENTIFICACION = "pacientes_idx_identificacion.dat";
-    private static final String RUTA_IDX_TIPO_SANGRE = "pacientes_idx_tipo_sangre.dat";
+    private static final String RUTA_DATOS = "data/pacientes/pacientes.dat";
+    private static final String RUTA_IDX_IDENTIFICACION = "data/pacientes/pacientes_idx_identificacion.dat";
+    private static final String RUTA_IDX_TIPO_SANGRE = "data/pacientes/pacientes_idx_tipo_sangre.dat";
 
     //* CONSTANTES
     private static final int LONGITUD_IDENTIFICACION = 20;
@@ -35,6 +36,15 @@ public class PacienteDAO {
     private final Map<String, List<Long>> cacheTipoSangrePosiciones;
 
     public PacienteDAO() throws Exception {
+
+        //* Crear directorios
+        FileUtil.crearDirectoriosParaArchivos(
+                RUTA_DATOS,
+                RUTA_IDX_IDENTIFICACION,
+                RUTA_IDX_TIPO_SANGRE
+        );
+
+
         //* Inicializar serializador
         this.serializador = new PacienteSerializador();
 
