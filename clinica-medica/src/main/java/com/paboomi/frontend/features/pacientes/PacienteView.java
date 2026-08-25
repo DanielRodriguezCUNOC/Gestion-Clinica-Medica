@@ -1,7 +1,6 @@
 package com.paboomi.frontend.features.pacientes;
 
 import com.paboomi.backend.dto.PacienteDTO;
-import com.paboomi.backend.models.LogEntry;
 import com.paboomi.backend.services.LogService;
 import com.paboomi.frontend.facade.ClinicaFacade;
 import com.paboomi.frontend.shared.DataTablePanel;
@@ -10,7 +9,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class PacienteView extends JPanel {
 
@@ -23,11 +21,8 @@ public class PacienteView extends JPanel {
     private JButton btnEliminar;
 
     private List<PacienteDTO> listaActual;
-    private LogService logService;
 
     public PacienteView(LogService logService) {
-
-        this.logService = logService;
 
         setLayout(new BorderLayout(10, 10));
         setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
@@ -186,14 +181,6 @@ public class PacienteView extends JPanel {
             try {
                 ClinicaFacade.getInstance().getPacienteService().eliminarPaciente(id);
                 JOptionPane.showMessageDialog(this, "Paciente eliminado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-
-                //* Registrar en log
-                logService.registrarLog(
-                        LogEntry.Modulo.PACIENTES,
-                        LogEntry.Accion.ELIMINACIÓN,
-                        "Se ha eliminado al paciente con ID: " + ClinicaFacade.getInstance().buscarPacientePorIdentificacion(id).getNombresCompletos(),
-                        null
-                );
 
                 cargarDatos();
             } catch (Exception e) {

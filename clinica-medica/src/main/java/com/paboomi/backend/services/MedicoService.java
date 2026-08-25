@@ -66,7 +66,9 @@ public class MedicoService {
             logService.registrarLog(
                     LogEntry.Modulo.MEDICOS,
                     LogEntry.Accion.CREACIÓN,
-                    "Médico registrado: " + medico.getNombres() + " " + medico.getApellidos(),
+                    "Médico registrado: " + medico.getNombres() + " " + medico.getApellidos() +
+                            " | Especialidad: " + medico.getEspecialidad() +
+                            " | Horario: " + medico.getHorarioInicio().format(TIME_FORMATTER) + " - " + medico.getHorarioFin().format(TIME_FORMATTER),
                     medico.getId().toString()
             );
 
@@ -233,8 +235,9 @@ public class MedicoService {
             //* Regitrar en el log
             logService.registrarLog(
                     LogEntry.Modulo.MEDICOS,
-                    LogEntry.Accion.CREACIÓN,
-                    "Médico registrado: " + medicoExistente.getNombres() + " " + medicoExistente.getApellidos(),
+                    LogEntry.Accion.ACTUALIZACIÓN,
+                    "Médico actualizado: " + medicoExistente.getNombres() + " " + medicoExistente.getApellidos() +
+                            " | Especialidad: " + medicoExistente.getEspecialidad(),
                     medicoExistente.getId().toString()
             );
 
@@ -260,6 +263,14 @@ public class MedicoService {
                 throw new ServiceException("El médico ya está activo");
             }
             medicoDAO.activarMedico(id);
+
+            logService.registrarLog(
+                    LogEntry.Modulo.MEDICOS,
+                    LogEntry.Accion.ACTIVACIÓN,
+                    "Médico activado: " + medico.getNombres() + " " + medico.getApellidos() +
+                            " | Especialidad: " + medico.getEspecialidad(),
+                    id.toString()
+            );
         } catch (ServiceException e) {
             throw e;
         } catch (Exception e) {
@@ -289,6 +300,13 @@ public class MedicoService {
 
 
             medicoDAO.desactivarMedico(id);
+            logService.registrarLog(
+                    LogEntry.Modulo.MEDICOS,
+                    LogEntry.Accion.DESACTIVACIÓN,
+                    "Médico desactivado: " + medico.getNombres() + " " + medico.getApellidos() +
+                            " | Especialidad: " + medico.getEspecialidad(),
+                    id.toString()
+            );
         } catch (ServiceException e) {
             throw e;
         } catch (Exception e) {
@@ -311,8 +329,9 @@ public class MedicoService {
             //* Regitrar en el log
             logService.registrarLog(
                     LogEntry.Modulo.MEDICOS,
-                    LogEntry.Accion.CREACIÓN,
-                    "Médico registrado: " + medico.getNombres() + " " + medico.getApellidos(),
+                    LogEntry.Accion.ELIMINACIÓN,
+                    "Médico eliminado: " + medico.getNombres() + " " + medico.getApellidos() +
+                            " | Especialidad: " + medico.getEspecialidad(),
                     medico.getId().toString()
             );
 
