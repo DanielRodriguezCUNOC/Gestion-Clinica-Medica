@@ -7,16 +7,12 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CitaDTO {
-    private String id;
+public class RegistrarCitaDTO {
     private String identificacionPaciente;
-    private String nombrePaciente;
     private String idMedico;
-    private String nombreMedico;
-    private String especialidadMedico;
     private String fecha;
     private String horaInicio;
-    private String motivo;
     private String estado;
+    private String motivo;
     private String observaciones;
 }

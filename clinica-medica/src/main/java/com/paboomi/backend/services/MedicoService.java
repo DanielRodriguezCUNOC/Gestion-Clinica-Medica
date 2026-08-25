@@ -1,6 +1,7 @@
 package com.paboomi.backend.services;
 
 import com.paboomi.backend.dao.MedicoDAO;
+import com.paboomi.backend.dto.CitaDTO;
 import com.paboomi.backend.dto.MedicoDTO;
 import com.paboomi.backend.dto.RegistrarMedicoDTO;
 import com.paboomi.backend.models.Cita;
@@ -184,13 +185,13 @@ public class MedicoService {
 
             try {
                 //* Obtener todas las citas del médico
-                List<Cita> citasMedico = citaService.buscarPorMedico(id);
+                List<CitaDTO> citasMedico = citaService.buscarPorMedico(id);
 
                 //* Verificar si hay citas fuera del nuevo horario
                 boolean hayConflicto = citasMedico.stream()
                         .filter(cita -> !cita.getEstado().equals("Cancelada") && !cita.getEstado().equals("Atendida"))
                         .anyMatch(cita -> {
-                            LocalTime horaCita = cita.getHoraInicio();
+                            LocalTime horaCita = LocalTime.parse(cita.getHoraInicio());
                             return horaCita.isBefore(horaInicio) || horaCita.isAfter(horaFin);
                         });
 

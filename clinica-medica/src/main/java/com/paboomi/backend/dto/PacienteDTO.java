@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 public class PacienteDTO {
     private String identificacion;
     private String nombresCompletos;
+    private String nombres;
+    private String apellidos;
     private String fechaNacimiento;
     private String sexo;
     private String telefono;
